@@ -2,6 +2,7 @@
 from roko_query.schemas import InputSchema
 from naptha_sdk.utils import get_logger, load_yaml
 import chromadb
+from chromadb.utils.embedding_functions import OllamaEmbeddingFunction
 from ollama import Client
 
 logger = get_logger(__name__)
@@ -23,10 +24,15 @@ def run(
     # Set the prompt
     messages = [{"role": "system", "content": cfg["inputs"]["system_message"]}]
 
+    ef = OllamaEmbeddingFunction(
+        model_name="Losspost/stella_en_1.5b_v5",
+        url="http://localhost:11434/api/embeddings"
+    )
+
     collections = client.list_collections()
     existing_collection_names = [x.name for x in collections]
     if collection_name in existing_collection_names:
-        collection = client.get_collection(name=collection_name)
+        collection = client.get_collection(name=collection_name, embedding_function=ef)
         num = f"{collection_name} has {collection.count()} entries"
         logger.info(num)
 
