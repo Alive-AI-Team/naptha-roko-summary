@@ -59,6 +59,8 @@ def run(
 
     Your summary should be coherent and logical, drawing only on the information provided.
 
+    Reply with ONLY the summary.
+
     CONTENT:
     {content}
     """
