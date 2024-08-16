@@ -52,14 +52,14 @@ def run(
     )
 
     prompt = f"""
-    Generate a summary of community activity for the RokoNetwork project
+    Generate a comprehensive summary of community activity for the RokoNetwork project
     based on the following content from {sources_str}
 
     This content is noisy; ignore messages, posts or content that you cannot make sense of.
 
     Your summary should be coherent and logical, drawing only on the information provided.
 
-    Reply with ONLY the summary.
+    Reply with ONLY the summary in markdown format.
 
     CONTENT:
     {content}
