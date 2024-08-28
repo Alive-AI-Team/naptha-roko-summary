@@ -3,6 +3,7 @@ from roko_summary.schemas import InputSchema
 from roko_summary.db import get_messages_between_dates
 from naptha_sdk.utils import get_logger
 from ollama import Client
+import yaml
 
 logger = get_logger(__name__)
 
@@ -29,7 +30,7 @@ def run(
     messages = [{"role": "system", "content": cfg["inputs"]["system_message"]}]
     content = ""
     for m in db_msgs:
-        content += f"{m.content}\n"
+        content += f"{m['content']}\n"
 
     prompt = f"""
     Generate a comprehensive summary of community activity for the RokoNetwork project
@@ -58,3 +59,16 @@ def run(
     logger.debug(response)
 
     return response
+
+if __name__ == "__main__":
+
+    cfg_path = f"roko_summary/component.yaml"
+    with open(cfg_path, "r") as file:
+        cfg = yaml.load(file, Loader=yaml.FullLoader)
+
+    inputs = InputSchema(
+        start_date="2024-07-01 00:00:00", 
+        end_date="2024-08-01 00:00:00", 
+        input_dir="b2febe52defb4185b8c6adf6ac5b531b"
+    )
+    response = run(inputs, cfg)
