@@ -46,7 +46,7 @@ def run(
     {content}
     """
 
-    logger.debug(prompt)
+    logger.info(prompt)
 
     messages.append({"role": "user", "content": prompt})
 
