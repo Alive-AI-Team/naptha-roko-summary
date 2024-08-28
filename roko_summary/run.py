@@ -2,8 +2,6 @@
 from roko_summary.schemas import InputSchema
 from roko_summary.db import get_messages_between_dates
 from naptha_sdk.utils import get_logger
-from boto3.dynamodb.conditions import Key
-from itertools import chain
 from ollama import Client
 
 logger = get_logger(__name__)
@@ -16,6 +14,11 @@ def run(
     flow_run=None,
     cfg=None,
 ):
+    """The Roko summary module is given an input directory in which it expects
+    to find two sqlite databases: twitter.sqlite, telegram.sqlite which it 
+    queries.
+    """
+
     logger.info(f"Inputs: {inputs}")
     logger.debug(f"config = {cfg}")
 
@@ -41,6 +44,8 @@ def run(
     CONTENT:
     {content}
     """
+
+    logger.debug(prompt)
 
     messages.append({"role": "user", "content": prompt})
 

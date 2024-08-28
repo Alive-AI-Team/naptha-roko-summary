@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "roko-summary"
-version = "0.1"
+version = "0.2"
 description = "A naptha module for generating summaries of Roko community activity"
 authors = ["cj-clifton"]
 readme = "README.md"
