@@ -4,7 +4,7 @@ from pathlib import Path
 def get_messages_between_dates(input_dir, date1, date2):
 
     def get(input_db_path, date1, date2):
-        conn = sqlite3.connect(db_path)
+        conn = sqlite3.connect(input_db_path)
         cursor = conn.cursor()
     
         query = '''
@@ -21,7 +21,7 @@ def get_messages_between_dates(input_dir, date1, date2):
     
         return messages
 
-    twitter_msgs = get(input_dir / "twitter.sqlite", date1, date2)
-    telegram_msgs = get(input_dir / "telegram.sqlite", date1, date2)
+    twitter_msgs = get(Path(input_dir) / "twitter.sqlite", date1, date2)
+    telegram_msgs = get(Path(input_dir) / "telegram.sqlite", date1, date2)
 
     return twitter_msgs + telegram_msgs
