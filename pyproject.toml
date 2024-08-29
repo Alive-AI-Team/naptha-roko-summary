@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "roko-summary"
+name = "roko_summary"
 version = "0.2"
 description = "A naptha module for generating summaries of Roko community activity"
 authors = ["cj-clifton"]
@@ -14,6 +14,7 @@ requests = "^2.31.0"
 pydantic = "^2.7.0"
 ollama = "^0.2.1"
 PyYAML = "^6.0.1"
+openai = "^1.42.0"
 
 [tool.poetry.dev-dependencies]
 black = "^24.4.2"

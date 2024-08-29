@@ -4,6 +4,7 @@ from roko_summary.db import get_messages_between_dates
 from naptha_sdk.utils import get_logger
 from ollama import Client
 import yaml
+from openai import OpenAI
 
 logger = get_logger(__name__)
 
@@ -39,6 +40,7 @@ def run(
     This content is noisy; ignore messages, posts or content that you cannot make sense of.
 
     Your summary should be coherent and logical, drawing only on the information provided.
+    Include a mention of any new members that have been added to the community.
 
     Reply with ONLY the summary in markdown format.
 
@@ -50,25 +52,18 @@ def run(
 
     messages.append({"role": "user", "content": prompt})
 
-    ollama_client = Client(host=cfg["models"]["ollama"]["api_base"])
+    client = OpenAI()
 
-    response = ollama_client.chat(
-        model=cfg["models"]["ollama"]["model"], messages=messages
-    )
+    completion = client.chat.completions.create( model="gpt-4o-mini", messages=messages)
+
+    # ollama_client = Client(host=cfg["models"]["ollama"]["api_base"])
+
+    # response = ollama_client.chat(
+    #     model=cfg["models"]["ollama"]["model"], messages=messages
+    # )
+
+    response = completion.choices[0].message
 
     logger.debug(response)
 
     return response
-
-if __name__ == "__main__":
-
-    cfg_path = f"roko_summary/component.yaml"
-    with open(cfg_path, "r") as file:
-        cfg = yaml.load(file, Loader=yaml.FullLoader)
-
-    inputs = InputSchema(
-        start_date="2024-07-01 00:00:00", 
-        end_date="2024-08-01 00:00:00", 
-        input_dir="b2febe52defb4185b8c6adf6ac5b531b"
-    )
-    response = run(inputs, cfg)
