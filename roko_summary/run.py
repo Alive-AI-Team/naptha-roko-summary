@@ -35,7 +35,8 @@ def run(
 
     prompt = f"""
     Generate a comprehensive summary of community activity for the RokoNetwork project
-    based on the following content.
+    for dates ranging from {start_date} to {end_date} based on the following content, 
+    delimited by triple backticks.
 
     This content is noisy; ignore messages, posts or content that you cannot make sense of.
 
@@ -45,25 +46,18 @@ def run(
     Reply with ONLY the summary in markdown format.
 
     CONTENT:
+    ```
     {content}
+    ```
     """
 
     logger.info(prompt)
 
     messages.append({"role": "user", "content": prompt})
-
-    client = OpenAI()
-
-    completion = client.chat.completions.create( model="gpt-4o-mini", messages=messages)
-
-    # ollama_client = Client(host=cfg["models"]["ollama"]["api_base"])
-
-    # response = ollama_client.chat(
-    #     model=cfg["models"]["ollama"]["model"], messages=messages
-    # )
-
-    response = completion.choices[0].message
-
+    ollama_client = Client(host=cfg["models"]["ollama"]["api_base"])
+    response = ollama_client.chat(
+        model=cfg["models"]["ollama"]["model"], messages=messages
+    )
     logger.debug(response)
 
     return response
