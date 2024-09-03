@@ -52,12 +52,23 @@ def run(
     """
 
     logger.info(prompt)
-
     messages.append({"role": "user", "content": prompt})
-    ollama_client = Client(host=cfg["models"]["ollama"]["api_base"])
-    response = ollama_client.chat(
-        model=cfg["models"]["ollama"]["model"], messages=messages
+
+    # ollama_client = Client(host=cfg["models"]["ollama"]["api_base"])
+    # response = ollama_client.chat(
+    #     model=cfg["models"]["ollama"]["model"], messages=messages
+    # )
+    # logger.debug(response)
+
+    client = OpenAI()
+    logger.info("Got openai client")
+    completion = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=messages
     )
-    logger.debug(response)
+    logger.info("got completion")
+    response = completion.choices[0]
+    logger.info(response)
+    logger.info("Done.")
 
     return response
