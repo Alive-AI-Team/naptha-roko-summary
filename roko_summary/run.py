@@ -67,7 +67,7 @@ def run(
         messages=messages
     )
     logger.info("got completion")
-    response = completion.choices[0]
+    response = completion.choices[0].message.content
     logger.info(response)
     logger.info("Done.")
 
