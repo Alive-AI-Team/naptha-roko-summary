@@ -2,8 +2,6 @@
 from roko_summary.schemas import InputSchema
 from roko_summary.db import get_messages_between_dates
 from naptha_sdk.utils import get_logger
-from ollama import Client
-import yaml
 from openai import OpenAI
 
 logger = get_logger(__name__)
@@ -51,24 +49,13 @@ def run(
     ```
     """
 
-    logger.info(prompt)
     messages.append({"role": "user", "content": prompt})
 
-    # ollama_client = Client(host=cfg["models"]["ollama"]["api_base"])
-    # response = ollama_client.chat(
-    #     model=cfg["models"]["ollama"]["model"], messages=messages
-    # )
-    # logger.debug(response)
-
     client = OpenAI()
-    logger.info("Got openai client")
     completion = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=messages
     )
-    logger.info("got completion")
     response = completion.choices[0].message.content
-    logger.info(response)
-    logger.info("Done.")
 
     return response
