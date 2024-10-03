@@ -7,17 +7,16 @@ from openai import OpenAI
 logger = get_logger(__name__)
 
 
-def run(
-    inputs: InputSchema,
-    worker_nodes=None,
-    orchestrator_node=None,
-    flow_run=None,
-    cfg=None,
-):
+def run(inputs: InputSchema, *args, **kwargs):
     """The Roko summary module is given an input directory in which it expects
     to find two sqlite databases: twitter.sqlite, telegram.sqlite which it 
     queries.
     """
+
+    if "cfg" not in kwargs.keys():
+        logger.error("Configuration error.")
+        return
+    cfg = kwargs["cfg"]
 
     logger.info(f"Inputs: {inputs}")
     logger.debug(f"config = {cfg}")
